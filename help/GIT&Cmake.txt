@@ -41,3 +41,19 @@ This will show commits which is present in path file
 Patch also provide a way to test code before applying
 git apply --check fixemptyposter.patch
  
+-------------------GIT OBJECTS--------------------
+directory: .git/objects/
+http://shafiulazam.com/gitbook/1_the_git_object_model.html
+to check type of the object: git cat-file -t cf1fdb215f948795523cde2987107944d137477
+to check content of the object: git cat-file -p cf1fdb215f948795523cde2987107944d1374777
+**Tags are use to name spesific revision in order to highlight is point instead of ust using revision
+https://git-scm.com/book/en/v2/Git-Basics-Tagging
+tag directories: .git/refs/tags
+
+----------GIT install-------------------
+sudo apt-get update
+sudo apt-get install git
+**For every repository you need to assign commitee information->
+git config --global user.name "Your Name"
+git config --global user.email "youremail@domain.com"
+OPTIONAL: nano ~/.gitconfig
