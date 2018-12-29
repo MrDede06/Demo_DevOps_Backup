@@ -1,0 +1,51 @@
+-----------------------------------------------------------GIT--------------------------------------
+-Checkout ->  git clone url
+- show branches and master -> git branch
+-  create branches -> git checkout -b "dede_RM"
+- git checkout master -> goes back master
+- git checkout dede_RM -> switch to your branch
+- git add <name of the file> or git add . (to add everything)
+- commit -> git commit read_numbers.cpp -m 'commit for pre-training task'
+- git push origin dede_RM -> to push your branch to gitlab CI
+
+---> to commit branch to master
+-to merge my branch to master -> git merge ozgur
+- to commit your merge -> git push origin ozgur
+
+ - git status -> shows status of the changed and modified file
+ - git log --oneline -> to check logs
+ 
+ diff between revisions: git diff 578651f85f60424f0a0fca23506b72693b012bef 785f282dbdab72e4528bd7b7fd18d33ca05519a7
+ check otut spesific revision: git checkout <revision>
+ check out head: git checkout master
+ 
+ copying branch to other-> git branch copyOfMyBranch MyBranch 	
+						   git checkout branch1 branch2
+ removing branch -> git branch -D <BranchName>
+ 
+ -----Reverting:
+ git reset --hard -> cleaning all changes
+ git revert <revision> -m "comment" -> revert spesific commit
+ 
+ 
+ ------Pushing
+ pushing changes already on master branch _> git push
+ pushing for branch -> git push origin branch_name
+ merging branch change to master-> enter the master branch aand -> git merge branch_name
+ 
+ 
+ ----Patching
+ Applying the patch
+git apply --stat fixemptyposter.patch
+This will show commits which is present in path file
+Patch also provide a way to test code before applying
+git apply --check fixemptyposter.patch
+ 
+--------------------------------------------Cmake-------------------------------------------------------
+ 
+cmake .
+make
+./main (or sth similar)
+
+----------------execute openssl lib-------
+g++ merkle_tree.cpp -L/usr/lib -lssl -lcrypto -o server

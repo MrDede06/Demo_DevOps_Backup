@@ -1,0 +1,64 @@
+1.) Tutorial with django test: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website
+2.) start tuturial video: https://www.youtube.com/watch?v=aHC3uTkT9r8&index=5&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p
+https://www.youtube.com/watch?v=Y-CT_l1dnVU&index=11&list=PLQVvvaa0QuDeA05ZouE4OzDYLHY-XH-Nd
+
+Apache2 server is the main applicatin which handles all web serving process. Virual hosting meaning that we can create multiple serving instance base on ip addrerss or dns which can share same server resources. 
+
+WSGI-> app between apache2 and django. Provides API for django for being accesed by web
+
+django-> python lib which provides web development framework
+
+------------------------Steps to create basic server-----------------
+
+Tutorial link: https://www.youtube.com/watch?v=VNBpdT0N8hw
+
+1. Get pip
+	apt-get install python-pip python-dev build-essential 
+2. Install Django
+	apt-get install python-pip python-dev build-essential 
+3. get Apache
+	apt-get install apache2
+	**in this moment apache should start automatically on localhost
+4. Install python-setuptools
+	apt-get install python-setuptools
+5. Install WSGI
+	apt-get install libapache2-mod-wsgi
+6.) Create Django prokejt
+	cd /var/www
+	django-admin.py startproject mysite
+	**you can inside structure by command "tree ."
+
+	optional step: to see if django work
+		cd mysite
+		python manage.py runserver
+		go -> http://127.0.0.1:8000/
+
+7.) Configure VirtualHost in Apache
+	vim /etc/apache2/sites-available/000-default.conf
+	delete everything
+	and write down below
+	<VirtualHost *:80>
+        ServerName mysite.org
+        ServerAlias www.mysite.org
+        ServerAdmin ozgurdede006@gmail.com
+
+        DocumentRoot /var/www/mysite
+        WSGIScriptAlias / /var/www/mysite/mysite/wsgi.py
+
+        ErrorLog /var/www/logs/error.log
+        CustomLog /var/www/logs/custom.log combined
+#       WSGIPythonPath /var/www/mysite
+	</VirtualHost>
+
+8.) Configure apache2.conf
+	vim /etc/apache2/apache2.conf
+	add last line below
+	WSGIPythonPath /var/www/mysite
+
+9. restart apache
+	service apache2 restart
+	aaaan go localhost
+
+
+
+
