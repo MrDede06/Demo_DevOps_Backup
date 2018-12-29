@@ -41,11 +41,3 @@ This will show commits which is present in path file
 Patch also provide a way to test code before applying
 git apply --check fixemptyposter.patch
  
---------------------------------------------Cmake-------------------------------------------------------
- 
-cmake .
-make
-./main (or sth similar)
-
-----------------execute openssl lib-------
-g++ merkle_tree.cpp -L/usr/lib -lssl -lcrypto -o server
