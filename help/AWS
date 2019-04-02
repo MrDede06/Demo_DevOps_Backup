@@ -1,6 +1,0 @@
-Opening E2C instance:
-	download provate key and move it into .ssh/
-	add right to only be accessedread and write by you -> chmod 600 .ssh/dedelinka.pem 
-	add it to ssh -> ssh-add .ssh/dedelinka.pem
-	or you can connect without ssh-add -> ssh ubuntu@3.16.125.195 -i .ssh/dedelinka.pem
-	you can connect either as a root or ununtu -> ssh root@3.16.125.195
