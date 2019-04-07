@@ -1,24 +1,29 @@
+
+from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.firefox.webdriver import WebDriver
+from django.urls import reverse
+import time
 
-class MySeleniumTests(StaticLiveServerTestCase):
-    fixtures = ['user-data.json']
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.selenium = WebDriver()
-        cls.selenium.implicitly_wait(10)
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.selenium.quit()
-        super().tearDownClass()
+class MySystemTests(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        self.options = webdriver.ChromeOptions()
+        CHROMEDRIVER_PATH = '/var/www/Demo_DevOps/main/tests/chromedriver' 
+        self.options.add_argument("start-maximized")
+        self.options.add_argument('--disable-gpu')
+        self.options.add_argument("disable-infobars")
+        self.options.add_argument("--disable-extensions")
+        self.options.add_argument("--no-sandbox")
+        self.options.add_argument("--disable-dev-shm-usage")
+        self.browser = webdriver.Chrome( options=self.options)        
 
-    def test_login(self):
-        self.selenium.get('%s%s' % (self.live_server_url, '/login/'))
-        username_input = self.selenium.find_element_by_name("username")
-        username_input.send_keys('myuser')
-        password_input = self.selenium.find_element_by_name("password")
-        password_input.send_keys('secret')
-        self.selenium.find_element_by_xpath('//input[@value="Log in"]').click()
+
+    def tearDown(self):
+        self.browser.close()
+
+    def test_user_register_and_check_tutorials(self):
+        self.browser.get(self.live_server_url)
+        time.sleep(5)
+ #       self.browser.close()

@@ -1,0 +1,77 @@
+------------Install Basic Gerrit-------------------
+-apt-get -y install openjdk-8-jdk
+-mkdir /var/gerrit
+-wget https://gerrit-releases.storage.googleapis.com/gerrit-2.16.4.war
+-java -jar gerrit-2.16.4.war init --batch --install-all-plugins -d /var/gerrit
+
+2nd step -> runnig gerrit server
+
+-apt-get install  apache2
+-apt-get install  apache2-utils
+-vim /var/gerrit/etc/gerrit.config
+		[gerrit]
+		        basePath = git
+		        serverId = c46e3f94-3ff2-4cb9-8a4f-706d80640551
+		        canonicalWebUrl = http://ec2-18-222-135-126.us-east-2.compute.amazonaws.com:80/ ***
+		[database]
+		        type = h2
+		        database = /var/gerrit/db/ReviewDB
+		[noteDb "changes"]
+		        disableReviewDb = true
+		        primaryStorage = note db
+		        read = true
+		        sequence = true
+		        write = true
+		[container]
+		        javaOptions = "-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance"
+		        javaOptions = "-Dflogger.logging_context=com.google.gerrit.server.logging.LoggingContext#getInstance"
+		        user = root
+		        javaHome = /usr/lib/jvm/java-8-openjdk-amd64/jre
+		[index]
+		        type = LUCENE
+		[auth]
+		        type = OPENID
+		[receive]
+		        enableSignedPush = false
+		[sendemail]
+		        smtpServer = localhost
+		[sshd]
+		        listenAddress = *:29418
+		[httpd]
+		        listenUrl = proxy-http://127.0.0.1:80/r/ ***
+		[cache]
+		        directory = cache
+
+-a2enmod proxy_http
+- vim /etc/apache2/sites-available/000-default.conf
+		<VirtualHost *:80>
+		  ServerName ec2-18-222-135-126.us-east-2.compute.amazonaws.com
+
+		  ProxyRequests off
+		  ProxyVia off
+		  ProxyPreserveHost on
+
+		  <Proxy *>
+		      Order deny,allow
+		      Allow from all
+		  </Proxy>
+
+		  <Location />
+		      AuthType Basic
+		      AuthName "Gerrit Code Review"
+		      Require valid-user
+		      AuthUserFile /etc/apache2/gerrit.passwd
+		  </Location>
+
+		  AllowEncodedSlashes on
+		  ProxyPass / http://127.0.0.1:8080/ nocanon
+		  ProxyPassReverse / http://127.0.0.1:8080/ nocanon
+
+		  ErrorLog /var/log/apache2/gerrit.error.log
+		  CustomLog /var/log/apache2/gerrit.access.log combined
+		</VirtualHost>
+
+-/etc/init.d/apache2 restart
+- You have to open 8080 port access also from AWS, 
+	Go security groups, find the relate e2c security group and click edit
+	select custom TCP and just enter the port you want and save

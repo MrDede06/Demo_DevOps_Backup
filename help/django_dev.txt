@@ -1,0 +1,30 @@
+->to start server: python manage.py runserver
+	you need vitual env since django work with python3
+	pip install virtualenv
+	virtualenv --python=python3 env01
+	source env01/bin/activate
+	pip install django
+
+----------------------------Databases & Admin -------------------------------
+->to create super user: python manage.py createsuperuser
+
+->**********To make migration-> python manage.py makemigrations
+	when you create a database class model in model.py, you can use this command to create a real db from it.
+-> python manage.py migrate : to migrate default stuff
+
+-> Creating SQL_Lite DB
+	create class model in model.py
+	python manage.py makemigrations
+	python manage.py sqlmigrate blog 0001 -> blog and 0001 we got output from makemigrations
+	python manage.py migrate
+By migration we can update structure of DB, create new on, create table etc. Without migrattion you have to deal with SQL code all the time
+
+-> To create a app like user, blog etc-> python manage.py startapp users
+.Firstly you need to configure setting.py NSTALLED_APPS under main project. So basically you can  create an app and use it for other projects by simply copy paste adnd DB migration
+.Second you need to configure urls.py under main project. You need to add app path for url pov. 
+	path('webapp/', include('webapp.urls')), -> when user go through webapp, main project url hub direct it to urls.py in webapp
+.That's why you need to create urls.py under your app.
+	path('', views.index, name='index'), -> after main project urls.py hub directs your app urls.py, it will be directed views.index
+.And you need to create in views.py what to show and what to do
+	def index(request):
+		do something aq

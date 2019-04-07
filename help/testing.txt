@@ -1,0 +1,13 @@
+To run unit test-> 
+	python3 manage.py test main.tests.test_UnitTests
+
+To run CT -> 
+	python3 manage.py test main.tests.test_CT
+
+To run SystemTest ->
+	pip3 install selenium
+**you may need to change driver in tests dir depending on the chrome version in the server
+http://chromedriver.chromium.org/downloads
+** you may need to also install chrome
+	
+		python3 manage.py test main.tests.test_SystemTests

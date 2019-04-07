@@ -1,0 +1,88 @@
+Install Docker:
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+	sudo apt-get update
+
+        apt-get install -y docker-ce
+
+Bash:
+
+#!/bin/sh
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+apt-get install -y docker-ce
+
+--------------------------Commands--------------------
+## List Docker CLI commands
+docker
+docker container --help
+
+## Display Docker version and info
+docker --version
+docker version
+docker info
+
+## Execute Docker image
+docker run hello-world
+
+## List Docker images
+docker image ls
+
+## List Docker containers (running, all, all in quiet mode)
+docker container ls
+docker container ls --all
+docker container ls -aq
+
+docker build -t friendlyhello .  # Create image using this directory's Dockerfile
+docker run -p 4000:80 friendlyhello  # Run "friendlyname" mapping port 4000 to 80
+docker run -d -p 4000:80 friendlyhello         # Same thing, but in detached mode
+docker container ls                                # List all running containers
+docker container ls -a             # List all containers, even those not running
+docker container stop <hash>           # Gracefully stop the specified container
+docker container kill <hash>         # Force shutdown of the specified container
+docker container rm <hash>        # Remove specified container from this machine
+docker container rm $(docker container ls -a -q)         # Remove all containers
+docker image ls -a                             # List all images on this machine
+docker image rm <image id>            # Remove specified image from this machine
+docker image rm $(docker image ls -a -q)   # Remove all images from this machine
+docker login             # Log in this CLI session using your Docker credentials
+docker tag <image> username/repository:tag  # Tag <image> for upload to registry
+docker push username/repository:tag            # Upload tagged image to registry
+docker run username/repository:tag                   # Run image from a registry
+
+-------------------------------------Docker_file------------------------------------------
+FROM: It defines the base image to use
+RUN: **It is used to build the image, it run shall commands in order to build image
+CMD: Unlike RUN it is not executed during buil, it is executed in the rund time of the container. When 
+	image is build and container runs as a process it executes cmd commands. They are also shall commands
+ENTRYPOINT: determines the start point of first cmd command.
+ADD: gets two argument: a source and a destination. It basicallu copies the files from the source on the host into the container's own filesystem at the set destination.
+ENV: used to set environment variables
+WORKDIR: to set directory where cmd will be executed
+EXPOSE: used to associate a specified port to enable networking between the running process inside the container the outside workd
+VOLUME: 
+
+
+-------------------------------------Entrypoint & CMD---------------------------------
+when we run container which is already build, it runs CMD or ENTRYPOINT in runtume of the container depending on the Dockerfile.
+***If we want to give argument on console to "docker run <container>" we have to use ENTRYPOINT, ENTRYPOINT get that arguments and executes it it's command.
+EX: Dockerfile->
+
+FROM ubuntu:16.04
+ENTRYPOINT ["echo"]
+CMD ["Hi DEocker"]
+
+1th option -> if we don't give any argument on console it will use CMD as defualt argument.
+	docker run <container> -> Hi Docker
+2th option -> If we give argument on the console, the consle arguent will have the priority 
+	docker run <container> Hello python -> Hello python
+
+*** No matter how much CMD you have, docker only run the last one so you can't create like Jenkins way execution run.
+
+** If you have only CMD but you provide argument on command line, CMD part will be ignored as example below:
+FROM ubuntu:16.04
+CMD ["Hi DEocker"]
+docker run <container> Hello python 
