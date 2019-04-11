@@ -1,0 +1,5 @@
+{
+  "main/tests/test_CT.py": true, 
+  "main/tests/test_SystemTests.py": true, 
+  "main/tests/test_UnitTests.py": true
+}
