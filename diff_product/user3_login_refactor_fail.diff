@@ -1,0 +1,26 @@
+diff --git a/main/templates/main/header.html b/main/templates/main/header.html
+index bdf3289..89dfbe2 100644
+--- a/main/templates/main/header.html
++++ b/main/templates/main/header.html
+@@ -19,7 +19,7 @@
+              <li><a href="/account">{{user.username|title}}</a></li>
+              <li><a href="/logout">Logout</a></li>
+         {% else %}
+-            <li><a href="/login">Login</a></li>
++            <li><a href="/login">Log-in</a></li>
+             <li><a href="/register">Register</a></li>
+         {% endif %}
+       </ul>
+diff --git a/main/urls.py b/main/urls.py
+index bfa010e..5eb4c23 100644
+--- a/main/urls.py
++++ b/main/urls.py
+@@ -8,6 +8,6 @@ urlpatterns = [
+     path("", views.homepage, name="homepage"),
+     path("register/", views.register, name="register"),
+     path("logout/", views.logout_request, name="logout"),
+-    path("login/", views.login_request, name="login"),
++    path("login/", views.login_request, name="Log-in"),
+     
+ ]
+\ No newline at end of file

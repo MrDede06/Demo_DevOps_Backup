@@ -1,0 +1,12 @@
+diff --git a/main/templates/main/header.html b/main/templates/main/header.html
+index bdf3289..71bbd82 100644
+--- a/main/templates/main/header.html
++++ b/main/templates/main/header.html
+@@ -21,6 +21,7 @@
+         {% else %}
+             <li><a href="/login">Login</a></li>
+             <li><a href="/register">Register</a></li>
++            <li><a href="/about_us">About Us</a></li>
+         {% endif %}
+       </ul>
+     </div>
