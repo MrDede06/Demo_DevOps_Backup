@@ -36,6 +36,9 @@ docker container ls
 docker container ls --all
 docker container ls -aq
 
+docker ps -> shows docker process and realted informatins
+docker ps --all -> shows all created docker ps
+
 docker build -t friendlyhello .  # Create image using this directory's Dockerfile
 docker run -p 4000:80 friendlyhello  # Run "friendlyname" mapping port 4000 to 80
 docker run -d -p 4000:80 friendlyhello         # Same thing, but in detached mode
@@ -86,3 +89,50 @@ CMD ["Hi DEocker"]
 FROM ubuntu:16.04
 CMD ["Hi DEocker"]
 docker run <container> Hello python 
+------------------------------------Training--------------------------
+-----------------------------Section 2 (Containers with Docker client)---------------------------------------
+- overwritting default  commands: docker run <image name> command
+	when you just run image you bsaically put rhe snapshot of the docker prpgram to the hard drive of the compuetr. So in this stage it is just a program on file system shape. In order to run the progrem you need to create process which is initiated buy commands. Default command is in your docker file, but if you provide command in docker run CLI, yo uare overwriting default command so basically the command in the docker file wont be executed. 	
+
+- docker system prune -> deletes any containers and containers releated procedess deleted so far
+
+- 
+"docker create" adds a writeable container on top of your image and sets it up for running whatever command you specified in your CMD. The container ID is reported back but it’s not started.
+	docker create creates a container number
+
+"docker start <container number created from docker create>" will start any stopped containers. This includes freshly created containers.
+
+"docker run" is a combination of create and start. It creates the container and starts it.
+
+***If you create a container by docker crate with some command, you can't change that command any more for other docker starts. You need to recreate that container with new command. For docker run you can each time change the command. If youy are using same docker container over and over and there is no need to build it each time because it is waste time. Create&start  way in this case better becase we are reusing already crerated container. In docker run w ehave to create the container each time.
+
+"docker restart" to restart alreadt created containe
+r
+
+- Logging-> "docker logs"
+	https://docs.docker.com/engine/reference/commandline/logs/
+
+- To stop running container on background ->
+	"docker stop <container ID>" -> sigterm -> it stops the process and provides time zone for teardown stuff
+	"docker kill <container ID>" -> sigkill -> kills the process imediately
+
+- Executing commnads in Running container -> docker exec -it <container ID> <command>
+		-it= input (stdin of running container process)
+ 
+-- ************ if you dont want write docker exec all the time, you can open a shell and have terminall access in your running docer -> "docker exec -it <container ID> sh" *************************************
+ 	sh -> bash command processor, it is linux program that allwos you tou have termina laccess
+ 	type exit to go out
+- You can use that termianl access also with "docker run" -> docker -run -it <container name> sh
+
+- Container isolation-> In default, containers don't have default communication system
+
+---------------------------------Section 3()Docker FIle stuff------------------------------------
+
+docker build -> executes FROM. RUN steps in docker file
+docker CMD -> executes CMD point since our program is ready to go in docker container file system
+
+**Every step in dockerfile creates a temporary container within docker build process, if you build second or more time the container, temporary containers will be obtained from cache. For exampe, if  you have FROM Ubuntu in your docker file but you chanegd the rest of trhe content of docker file, when you re build the temporary container which was build for "from ubuntu" instruction will be obained from cache.
+
+- Docker commit -> when you run container and u[date something with in the running container, you can create a new image from updated container content
+	docker commit -c 'CMD ["connad"]' <container ID>
+		-c -> to provide default command
