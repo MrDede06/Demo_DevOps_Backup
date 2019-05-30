@@ -4,3 +4,90 @@ Opening E2C instance:
 	add it to ssh -> ssh-add .ssh/dedelinka.pem
 	or you can connect without ssh-add -> ssh ubuntu@3.16.125.195 -i .ssh/dedelinka.pem
 	you can connect either as a root or ununtu -> ssh root@3.16.125.195
+
+Starting commands:
+	- sudo snap install aws-cli --classic
+
+
+
+
+
+
+
+-------------------------Connectiong ec2 to S3----------------
+
+1.) Create s3 bucket
+2.) Go IAM ->  Roles -> Create role -> EC2 -> Filter : AmazonS3FullAccess
+3.) Go your VPC ->  Endpoints -> Create Endpoint -> 	
+		com.amazonaws.us-east-1.s3
+		** Route Table ID nin altindaki kutucugu enable et
+4.) Crate instanse in the configured VPC and pick the configured IAM for full s3 access
+ 
+S3 CLI->
+	aws s3 ls -> to list s3 bucketss
+
+	https://docs.aws.amazon.com/cli/latest/reference/s3/index.html
+	aws s3 cp Demo_DevOps/db.sqlite3 s3://devops-demo-s3/DataBases/
+
+
+
+Setuping Django AWS->
+-Add security groups  HTTP and HTTPS
+-sudo apt-get update
+-sudo apt-get install python-pip python-dev 
+-sudo apt-get install libpq-dev
+-sudo apt-get install postgresql
+-sudo apt-get install postgresql-contrib
+-sudo apt-get install nginx
+
+-sudo -u postgres psql ->
+	create database myproject;
+	CREATE USER devOpsBoot with password 'password';
+	alter role devOpsBoot set client_encoding to 'utf8';
+	alter role devOpsBoot set default_transaction_isolation to 'read committed';
+	set timezone to 'UTC';
+	grant all privileges on database myproject to devOpsBoot;
+	\q (to exit)
+
+- sudo -H pip install --upgrade pip
+- sudo -H pip install virtualenv
+- mkdir myproject -> cd myproject -> virtualenv my_virtualenv -> source my_virtualenv/bin/activate
+- pip install django gunicorn psycopg2
+- django-admin startproject myWEBsite /home/ubuntu/myproject
+
+- vim /home/ubuntu/myproject/myWEBsite/settings.py 
+				DATABASES = {
+			    'default': {
+			        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+			        'NAME': 'myproject',
+			        'USER': 'devOpsBoot',
+			        'PASSWORD': 'password',
+			        'HOST': 'localhost',
+			        'PORT': '',     
+			    }
+			}
+
+			under STATIC_URL->
+			STATIC_ROOT = os.path.join(BASE_DIR, 'static/') 
+
+
+- sudo vim /etc/postgresql/10/main/pg_hba.conf 
+	add -> locall  all             devOpsBoot                              ident
+- sudo service postgresql restart
+
+- python manage.py makemigrations
+
+*** ALTER USER postgres PASSWORD 'newpassword'; (the user that i created didnt made it work)
+
+- python manage.py migrate
+
+- python manage.py createsuperuser
+	name:dede
+	password: Televizyon06
+
+- python manage.py collectstatic
+- sudo ufw allow 8000
+
+- vim /home/ubuntu/myproject/myWEBsite/settings.py -> ALLOWED_HOSTS = ['Public IP of AWS']
+
+- python manage.py runserver 0.0.0.0:8000 -> somehting should already work

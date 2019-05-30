@@ -64,7 +64,7 @@ CMD: Unlike RUN it is not executed during buil, it is executed in the rund time 
 ENTRYPOINT: determines the start point of first cmd command.
 ADD: gets two argument: a source and a destination. It basicallu copies the files from the source on the host into the container's own filesystem at the set destination.
 ENV: used to set environment variables
-WORKDIR: to set directory where cmd will be executed
+WORKDIR: to set directory where cmd will be executed ***it is directory inside container file system
 EXPOSE: used to associate a specified port to enable networking between the running process inside the container the outside workd
 VOLUME: 
 
@@ -136,3 +136,35 @@ docker CMD -> executes CMD point since our program is ready to go in docker cont
 - Docker commit -> when you run container and u[date something with in the running container, you can create a new image from updated container content
 	docker commit -c 'CMD ["connad"]' <container ID>
 		-c -> to provide default command
+
+-------------------------Section 5 (Docker Compose with Multiple Local Containers)----------------
+
+- Docker Compose: Used to start-up multiple Docker containers at the same time. Automates some of the long-winded arguments we were passing to 'docker run'
+
+- Commands: it wil automatically look for docker-compose.yml
+	docker run myimage -> docker-compose up
+	docker build . && docker run myimage -> docker-compose up --build
+
+	stop containers -> docker-compose down
+
+	if one container crash on compose, you can configure it to restart in yaml
+
+	list the process -> docker-compose ps
+
+	**when you add somethign to services colmun, it will create new container services
+
+-------------------------Section 6 -------------------
+
+VOLUME:
+	When you have project and you work on source code. You dont want to build all the time your docker file when you change your source code. That's why you cna use volume feature. WHen you use voluems data is real time between hosting PC and container
+
+-> Build the image
+	docker run -p port:port -v source_dir:dest_dir_in_container_fileSystem <image ID>
+
+if you have some folder that you dont want to be mapped
+	docker run -p port:port -v <name and path of the folder to be excluded> -v source_dir:dest_dir_in_container_fileSystem <image ID>
+
+second solution is to use VOLUME keyword in either docker file or docker composer
+
+- Multi Step Builds ->
+	in same docker file yoy can have 2 build step, every build step phase starts with FROM keyword. However till last phase you have to define phase name like: FROM ubuntu as phase1, you don't ned to spesify for last phase
